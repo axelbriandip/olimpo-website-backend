@@ -65,3 +65,28 @@ exports.login = async (req, res) => {
         res.status(500).json({ error: 'Error del servidor' });
     }
 };
+
+// Función para recuperar contraseña
+exports.forgotPassword = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+            // Esta es la URL de tu frontend a la que Supabase redirigirá al usuario
+            // cuando haga clic en el enlace del email.
+            // Debes configurar esto en tu proyecto de Supabase o en el .env
+            redirectTo: 'https://tu-sitio.com/cambiar-contrasena',
+        });
+
+        if (error) {
+            return res.status(400).json({ error: error.message });
+        }
+
+        // Por razones de seguridad, es mejor no confirmar si el email existe
+        // Simplemente le dices al usuario que revise su bandeja de entrada
+        res.status(200).json({ message: 'Si el email existe, se ha enviado un enlace de recuperación.' });
+
+    } catch (err) {
+        res.status(500).json({ error: 'Error del servidor' });
+    }
+};

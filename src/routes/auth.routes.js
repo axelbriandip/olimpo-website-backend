@@ -7,4 +7,7 @@ const authController = require('../controllers/auth.controller.js');
 router.post('/register', authController.register);
 router.post('/login', authController.login);
 
+// Ruta para solicitar el enlace de recuperación
+router.post('/forgot-password', authController.forgotPassword);
+
 module.exports = router;
